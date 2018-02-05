@@ -1,67 +1,80 @@
 package googl
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
+
 	"github.com/parnurzeal/gorequest"
 )
 
+// Googl struct
 type Googl struct {
 	Key string
 }
 
+// ShortMsg struct
 type ShortMsg struct {
 	Kind    string `json:"kind"`
-	Id      string `json:"id"`
-	LongUrl string `json:"longUrl"`
+	ID      string `json:"id"`
+	LongURL string `json:"longUrl"`
 }
 
+// LongMsg struct
 type LongMsg struct {
 	Kind    string `json:"kind"`
-	Id      string `json:"id"`
-	LongUrl string `json:"longUrl"`
+	ID      string `json:"id"`
+	LongURL string `json:"longUrl"`
 	Status  string `json:"status"`
 }
 
+// NewClient returns a Client of Googl
 func NewClient(key string) *Googl {
 	return &Googl{Key: key}
 }
 
-func (c *Googl) Shorten(url string) string {
+// Shorten function takes a longUrl and return a struct with the shorten data
+func (c *Googl) Shorten(url string) (ShortMsg, error) {
 	request := gorequest.New()
-	var response string
-
-	gUrl := "https://www.googleapis.com/urlshortener/v1/url?key=" + c.Key
+	var response ShortMsg
+	var err string
 	if c.Key == "" {
-		response = "You need to set the Google Url Shortener API Key"
+		err := "You need to set the Google Url Shortener API Key"
+		return response, errors.New(err)
 	} else if url == "" {
-		response = "You need to set the url to be shortened"
+		err := "You need to set the url to be shortened"
+		return response, errors.New(err)
 	} else {
-		resp, body, _ := request.Post(gUrl).
+		// Create Request URL
+		gURL := "https://www.googleapis.com/urlshortener/v1/url?key=" + c.Key
+		resp, _, _ := request.Post(gURL).
 			Set("Accept", "application/json").
 			Set("Content-Type", "application/json").
 			Send(`{"longUrl":"` + url + `"}`).End()
 		if resp.Status == "200 OK" {
-			fmt.Println(body)
-			response = "Done! Ok!"
+			json.NewDecoder(resp.Body).Decode(&response)
+
 		} else {
-			response = "Some error occurred, please try again later"
+			err := "Some error occurred, please try again later"
+			return response, errors.New(err)
 		}
 	}
 
-	return response
+	return response, errors.New(err)
 }
 
-func (c *Googl) Expand(shortUrl string) string {
+// Expand takes a shortURL & returns the expanded URL
+func (c *Googl) Expand(shortURL string) string {
 	request := gorequest.New()
 	var response string
 
-	gUrl := "https://www.googleapis.com/urlshortener/v1/url?key=" + c.Key + "&shortUrl=" + shortUrl
+	gURL := "https://www.googleapis.com/urlshortener/v1/url?key=" + c.Key + "&shortUrl=" + shortURL
 	if c.Key == "" {
 		response = "You need to set the Google Url Shortener API Key"
-	} else if shortUrl == "" {
+	} else if shortURL == "" {
 		response = "You need to set the url to be expanded"
 	} else {
-		resp, body, _ := request.Get(gUrl).
+		resp, body, _ := request.Get(gURL).
 			Set("Accept", "application/json").
 			Set("Content-Type", "application/json").End()
 		if resp.Status == "200 OK" {
