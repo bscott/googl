@@ -9,12 +9,6 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/dimoreira/googl"
-  packages = ["."]
-  revision = "d677a385a73ddb74d1cd198161f081f6c7fdd57b"
-
-[[projects]]
-  branch = "master"
   name = "github.com/moul/http2curl"
   packages = ["."]
   revision = "9ac6cf4d929b2fa8fd2d2e6dec5bb0feb4f4911d"
@@ -46,6 +40,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e0289660800eeb048f55a6a08ae4fc6c30046fa78e6044ad5795c0e05b0c7ee9"
+  inputs-digest = "5c76113f8a936f216926da13fd3dceb82f7ee81ce3ebf4021ecb4f0c4a888977"
   solver-name = "gps-cdcl"
   solver-version = 1

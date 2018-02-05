@@ -8,13 +8,13 @@ A library (and CLI) for Google Url Shortener service.
 To install the library:
 
 ```
-go get github.com/dimoreira/googl
+go get github.com/bscott/googl
 ```
 
 To install the library with the CLI:
 
 ```
-go get github.com/dimoreira/googl/cli/googl
+go get github.com/bscott/googl/cli/googl
 ```
 
 ## Usage
