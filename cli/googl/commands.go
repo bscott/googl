@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/bscott/googl"
 	"github.com/codegangsta/cli"
-	"github.com/dimoreira/googl"
 )
 
+// Commands for this CLI
 var Commands = []cli.Command{
 	shorten,
 	expand,
@@ -41,18 +43,25 @@ var expand = cli.Command{
 	Action: Expand,
 }
 
+// Shorten a long URL.
 func Shorten(c *cli.Context) {
 	url := c.Args().First()
 	key := c.String("key")
 	client := googl.NewClient(key)
-	shortUrl := client.Shorten(url)
-	fmt.Println("shorten:", shortUrl)
+	shortURL, err := client.Shorten(url)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println("shorten Short url:", shortURL.ID)
+	fmt.Println("shorten Long url:", shortURL.LongURL)
 }
 
+// Expand returns a Long URL.
 func Expand(c *cli.Context) {
 	url := c.Args().First()
 	key := c.String("key")
 	client := googl.NewClient(key)
-	longUrl := client.Expand(url)
-	fmt.Println("expand:", longUrl)
+	longURL := client.Expand(url)
+	fmt.Println("expand:", longURL)
 }
