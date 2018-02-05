@@ -37,7 +37,7 @@ func NewClient(key string) *Googl {
 func (c *Googl) Shorten(url string) (ShortMsg, error) {
 	request := gorequest.New()
 	var response ShortMsg
-	var err string
+
 	if c.Key == "" {
 		err := "You need to set the Google Url Shortener API Key"
 		return response, errors.New(err)
