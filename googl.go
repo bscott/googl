@@ -60,7 +60,7 @@ func (c *Googl) Shorten(url string) (ShortMsg, error) {
 		}
 	}
 
-	return response, errors.New(err)
+	return response, nil
 }
 
 // Expand takes a shortURL & returns the expanded URL
